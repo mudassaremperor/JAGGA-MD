@@ -215,6 +215,14 @@ app.post("/api/pair", async (req, res) => {
         if (!fs.existsSync(sessionDir)) {
             fs.mkdirSync(sessionDir, { recursive: true });
         }
+        // Close any existing connection for this number before creating a new one
+if (activeConnections.has(normalizedNumber)) {
+    try {
+        activeConnections.get(normalizedNumber).conn.ws.close();
+    } catch (e) {}
+    activeConnections.delete(normalizedNumber);
+    await new Promise(resolve => setTimeout(resolve, 1000)); // let it fully close
+}
 
         // Initialize WhatsApp connection
         const { state, saveCreds } = await useMultiFileAuthState(sessionDir);
