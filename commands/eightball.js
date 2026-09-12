@@ -3,23 +3,23 @@
  * Magic 8-Ball - Unicode Safe Version (English Responses)
  */
 
-// ? Unicode-safe emojis (kabhi corrupt nahi honge)
+// Unicode-safe emojis
 const EMOJI = {
-  ball:   "\u{1F3B1}",     // ?
-  clock:  "\u23F3",        // ?
-  warn:   "\u26A0\uFE0F",  // ??
-  cross:  "\u274C",        // ?
-  check:  "\u2705",        // ?
-  no:     "\u{1F6AB}",     // ?
-  think:  "\u{1F914}",     // ?
-  fire:   "\u{1F525}",     // ?
-  spark:  "\u2728",        // ?
-  star:   "\u2B50",        // ?
-  quest:  "\u2753",        // ?
-  hundred:"\u{1F4AF}",     // ?
-  target: "\u{1F3AF}",     // ?
-  dice:   "\u{1F3B2}",     // ?
-  sign:   "\u{1F44C}"      // ?
+  ball:   "\u{1F3B1}",
+  clock:  "\u23F3",
+  warn:   "\u26A0\uFE0F",
+  cross:  "\u274C",
+  check:  "\u2705",
+  no:     "\u{1F6AB}",
+  think:  "\u{1F914}",
+  fire:   "\u{1F525}",
+  spark:  "\u2728",
+  star:   "\u2B50",
+  quest:  "\u2753",
+  hundred:"\u{1F4AF}",
+  target: "\u{1F3AF}",
+  dice:   "\u{1F3B2}",
+  sign:   "\u{1F44C}"
 };
 
 const COOLDOWN = new Map();
@@ -35,7 +35,7 @@ module.exports = {
 
   execute: async (conn, mek, m, { from, q, reply, sender }) => {
     try {
-      // ©¤©¤©¤ Cooldown
+      // Cooldown
       const userId = sender || m.sender || "unknown";
       const now = Date.now();
       if (COOLDOWN.has(userId) && now - COOLDOWN.get(userId) < COOLDOWN_MS) {
@@ -44,7 +44,7 @@ module.exports = {
       }
       COOLDOWN.set(userId, now);
 
-      // ©¤©¤©¤ Validation
+      // Validation
       if (!q || !q.trim()) {
         return reply(
           `${EMOJI.ball} *Magic 8-Ball*\n\n` +
@@ -57,7 +57,7 @@ module.exports = {
         return reply(`${EMOJI.warn} Question is too long. Keep it under 200 characters.`);
       }
 
-      // ©¤©¤©¤ Categorized responses (English)
+      // Categorized responses (English)
       const positive = [
         `Absolutely! ${EMOJI.hundred}`,
         `Yes, for sure! ${EMOJI.check}`,
@@ -88,7 +88,7 @@ module.exports = {
         `Leave it to fate. ${EMOJI.dice}`
       ];
 
-      // ©¤©¤©¤ Pick category then response
+      // Pick category then response
       const roll = Math.random();
       let answer, emoji;
 
@@ -103,7 +103,7 @@ module.exports = {
         emoji = EMOJI.think;
       }
 
-      // ©¤©¤©¤ Safe mention JID
+      // Safe mention JID
       let mentionedJid = [];
       try {
         if (m.sender && m.sender.includes("@s.whatsapp.net")) {
@@ -111,7 +111,7 @@ module.exports = {
         }
       } catch {}
 
-      // ©¤©¤©¤ Send reply
+      // Send reply
       await conn.sendMessage(from, {
         text:
           `${EMOJI.ball} *Magic 8-Ball*\n\n` +
